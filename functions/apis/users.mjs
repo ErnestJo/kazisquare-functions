@@ -31,7 +31,7 @@ export const registerUser = bfast.functions().onPostHttpRequest(
     (request, response) => {
         const mobile = request.params.mobile;
         const body = JSON.parse(JSON.stringify(request.query?request.query: {}));
-        console.log(body);
+        // console.log(body);
         bfast.database().table('users').get(mobile).then(user => {
             return bfast.database().table('users').query().byId(user.id).updateBuilder()
                 .raw({
