@@ -10,9 +10,9 @@ export const addWork = bfast.functions().onPostHttpRequest(
         if(workType.toString().trim() === '1'){
             workType = 'online';
         }else{
-            workType = 'physical'
+            workType = 'physical';
         }
         work.type = workType;
-        response.json(work);
+        response.status(200).json(work);
     }
 );
