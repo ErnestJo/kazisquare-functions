@@ -13,11 +13,15 @@ export const addWork = bfast.functions().onPostHttpRequest(
             workType = 'physical';
         }
         work.type = workType;
-        bfast.database().table('works').save(work).then(value=>{
-            response.status(200).json(value);
-        }).catch(reason=>{
-            response.status(400).json(reason);
-        });
+        if(work && work.wage && work.mobile && work.title ){
+            bfast.database().table('works').save(work).then(value=>{
+                response.status(200).json(value);
+            }).catch(reason=>{
+                response.status(400).json(reason);
+            });
+        }else{
+            response.status(400).json({message: "bad data format"});
+        }
     }
 );
 
@@ -25,6 +29,14 @@ export const getWorks = bfast.functions().onGetHttpRequest(
     '/works/:type',
     (request, response)=>{
         let workType = request.params.type;
+        let skip = request.query.skip?request.query.skip: 0;
+        let size = request.query.size?request.query.size: 8;
+        if(Number.isNaN(skip)){
+            skip = parseInt(skip);
+        }
+        if(Number.isNaN(size)){
+            size = parseInt(size);
+        }
         if(workType.toString().trim() === '1'){
             workType = 'online';
         }else{
@@ -33,8 +45,15 @@ export const getWorks = bfast.functions().onGetHttpRequest(
         bfast.database().table('works').query()
         .equalTo("type", workType)
         .orderBy("_created_at", -1)
+        .size(8)
         .find().then(value=>{
-            response.status(200).json(value);
+            response.status(200).json({
+                kazi: value.map(x=>{
+                    return `${value.indexOf(x)+1}) ${x.title} Tsh ${numeral(x.wage).format('0,0')} Piga ${x.mobile}.`;
+                }).join('\n'),
+                skip: skip,
+                size: size
+            });
         }).catch(reason=>{
             response.status(400).json(reason);
         });
