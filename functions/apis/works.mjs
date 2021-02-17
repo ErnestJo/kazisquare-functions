@@ -32,7 +32,10 @@ export const getWorks = bfast.functions().onGetHttpRequest(
         let workType = request.params.type;
         let skip = request.query.skip?request.query.skip: 0;
         let size = request.query.size?request.query.size: 8;
-        // let page = request.query.page?request.query.page: 1;
+        let page = request.query.page?request.query.page: 0;
+        if(Number.isNaN(page)){
+            page = parseInt(page);
+        }
         if(Number.isNaN(skip)){
             skip = parseInt(skip);
         }
@@ -61,8 +64,9 @@ export const getWorks = bfast.functions().onGetHttpRequest(
             }else{
                 response.status(200).json({
                     kazi: 'hamna',
-                    skip: skip,
-                    size: size
+                    skip: page * size,
+                    size: size,
+                    page: page + 1
                 });
             }
         }).catch(reason=>{
