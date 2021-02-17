@@ -13,18 +13,19 @@ export const getUser = bfast.functions().onGetHttpRequest(
                 response.status(404).json({ message: 'registration not completed' });
             }
         }).catch(reason => {
+            console.log(reason);
             response.status(400).json(reason);
         });
     }
 );
 
 export const registerUser = bfast.functions().onPostHttpRequest(
-    '/users/:mobile',
+    '/users/:uuid',
     (request, response) => {
-        const mobile = request.params.mobile;
+        const uuid = request.params.uuid;
         const body = JSON.parse(JSON.stringify(request.query?request.query: {}));
         // console.log(body);
-        bfast.database().table('users').get(mobile).then(user => {
+        bfast.database().table('users').get(uuid).then(user => {
             return bfast.database().table('users').query().byId(user.id).updateBuilder()
                 .raw({
                     "$set": body
@@ -33,11 +34,13 @@ export const registerUser = bfast.functions().onPostHttpRequest(
         }).then(value => {
             response.status(200).json(value);
         }).catch(reason => {
+            console.log(reason);
             if(reason && reason.message && reason.message.toString().trim() === 'Query not succeed'){
                 const _body = Object.assign(body, {id: mobile});
                 return bfast.database().table('users').save(body).then(value=>{
                     response.status(200).json(value);
                 }).catch(reason=>{
+                    console.log(reason);
                     response.status(400).json(reason);
                 });
             }else{
