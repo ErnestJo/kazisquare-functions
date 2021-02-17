@@ -23,20 +23,23 @@ export const registerUser = bfast.functions().onPostHttpRequest(
     '/users/:uuid',
     (request, response) => {
         const uuid = request.params.uuid;
-        const body = JSON.parse(JSON.stringify(request.query?request.query: {}));
+        const body = request.query?request.query: {};
         // console.log(body);
         bfast.database().table('users').get(uuid).then(user => {
-            return bfast.database().table('users').query().byId(user.id).updateBuilder()
-                .raw({
-                    "$set": body
-                })
-                .update();
+            const updateBuilder =  bfast.database().table('users')
+                .query()
+                .byId(user.id)
+                .updateBuilder();
+            Object.keys(body).forEach(key=>{
+                updateBuilder.set(key, body[key])
+            });
+            return updateBuilder.update();
         }).then(value => {
             response.status(200).json(value);
         }).catch(reason => {
             console.log(reason);
             if(reason && reason.message && reason.message.toString().trim() === 'Query not succeed'){
-                const _body = Object.assign(body, {id: mobile});
+               // const _body = Object.assign(body, {id: uuid});
                 return bfast.database().table('users').save(body).then(value=>{
                     response.status(200).json(value);
                 }).catch(reason=>{
