@@ -1,4 +1,5 @@
 import bfastnode from "bfastnode";
+import numeral from 'numeral';
 
 const { bfast } = bfastnode;
 
@@ -47,14 +48,23 @@ export const getWorks = bfast.functions().onGetHttpRequest(
         .orderBy("_created_at", -1)
         .size(8)
         .find().then(value=>{
-            response.status(200).json({
-                kazi: value.map(x=>{
-                    return `${value.indexOf(x)+1}) ${x.title} Tsh ${numeral(x.wage).format('0,0')} Piga ${x.mobile}.`;
-                }).join('\n'),
-                skip: skip,
-                size: size
-            });
+            if(value && Array.isArray(value) && value.length>0){
+                response.status(200).json({
+                    kazi: value.map(x=>{
+                        return `${value.indexOf(x)+1}) ${x.title} Tsh ${numeral(x.wage).format('0,0')} Piga ${x.mobile}.`;
+                    }).join('\n'),
+                    skip: skip,
+                    size: size
+                });
+            }else{
+                response.status(200).json({
+                    kazi: `Hamna kazi kwa sasa, tutakujulisha zitakapotokea`,
+                    skip: skip,
+                    size: size
+                });
+            }
         }).catch(reason=>{
+            console.log(reason);
             response.status(400).json(reason);
         });
     }
