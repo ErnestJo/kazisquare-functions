@@ -32,6 +32,7 @@ export const getWorks = bfast.functions().onGetHttpRequest(
         let workType = request.params.type;
         let skip = request.query.skip?request.query.skip: 0;
         let size = request.query.size?request.query.size: 8;
+        // let page = request.query.page?request.query.page: 1;
         if(Number.isNaN(skip)){
             skip = parseInt(skip);
         }
@@ -46,14 +47,15 @@ export const getWorks = bfast.functions().onGetHttpRequest(
         bfast.database().table('works').query()
         .equalTo("type", workType)
         .orderBy("_created_at", -1)
-        .size(8)
+        .size(size)
+        .skip(skip)
         .find().then(value=>{
             if(value && Array.isArray(value) && value.length>0){
                 response.status(200).json({
                     kazi: value.map(x=>{
                         return `${value.indexOf(x)+1}) ${x.title} Tsh ${numeral(x.wage).format('0,0')} Piga ${x.mobile}.`;
                     }).join('\n'),
-                    skip: skip,
+                    skip: size,
                     size: size
                 });
             }else{
