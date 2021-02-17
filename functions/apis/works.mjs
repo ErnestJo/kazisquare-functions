@@ -33,15 +33,15 @@ export const getWorks = bfast.functions().onGetHttpRequest(
         let skip = request.query.skip?request.query.skip: 0;
         let size = request.query.size?request.query.size: 8;
         let page = request.query.page?request.query.page: 0;
-        if(Number.isNaN(page)){
+       // if(Number.isNaN(page)){
             page = parseInt(page);
-        }
-        if(Number.isNaN(skip)){
+        // }
+        // if(Number.isNaN(skip)){
             skip = parseInt(skip);
-        }
-        if(Number.isNaN(size)){
+       // }
+       // if(Number.isNaN(size)){
             size = parseInt(size);
-        }
+       // }
         if(workType.toString().trim() === '1'){
             workType = 'online';
         }else{
@@ -73,14 +73,14 @@ export const getWorks = bfast.functions().onGetHttpRequest(
                 response.status(200).json({
                     kazi: 'hamna',
                     mbele: {
-                        skip: (page + 1) * size,
-                        size: size,
-                        page: page + 1
+                        skip: 0,
+                        size: 8,
+                        page: 0
                     },
                     nyuma: {
-                        skip: page * size,
-                        size: size,
-                        page: page
+                        skip: 0,
+                        size: 8,
+                        page: 0
                     }
                 });
             }
