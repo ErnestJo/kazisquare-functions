@@ -58,7 +58,7 @@ export const getWorks = bfast.functions().onGetHttpRequest(
                 });
             }else{
                 response.status(200).json({
-                    kazi: `Hamna kazi kwa sasa, tutakujulisha zitakapotokea`,
+                    kazi: 'hamna',
                     skip: skip,
                     size: size
                 });
