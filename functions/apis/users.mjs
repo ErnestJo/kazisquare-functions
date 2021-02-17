@@ -23,17 +23,19 @@ export const registerUser = bfast.functions().onPostHttpRequest(
     '/users/:uuid',
     (request, response) => {
         const uuid = request.params.uuid;
-        const body = request.query?request.query: {};
+        const body = request.body;
         // console.log(body);
         bfast.database().table('users').get(uuid).then(user => {
-            const updateBuilder =  bfast.database().table('users')
+            return bfast.database().table('users')
                 .query()
                 .byId(user.id)
-                .updateBuilder();
-            Object.keys(body).forEach(key=>{
-                updateBuilder.set(key, body[key])
-            });
-            return updateBuilder.update();
+                .updateBuilder()
+                .doc(body)
+                .update();
+            // Object.keys(body).forEach(key=>{
+            //     updateBuilder.set(key, body[key])
+            // });
+            // return updateBuilder.update();
         }).then(value => {
             response.status(200).json(value);
         }).catch(reason => {
