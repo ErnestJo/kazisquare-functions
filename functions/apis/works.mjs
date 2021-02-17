@@ -58,15 +58,30 @@ export const getWorks = bfast.functions().onGetHttpRequest(
                     kazi: value.map(x=>{
                         return `${value.indexOf(x)+1}) ${x.title} Tsh ${numeral(x.wage).format('0,0')} Piga ${x.mobile}.`;
                     }).join('\n'),
-                    skip: size,
-                    size: size
+                    mbele: {
+                        skip: (page + 1) * size,
+                        size: size,
+                        page: page + 1
+                    },
+                    nyuma: {
+                        skip: page * size,
+                        size: size,
+                        page: page
+                    }
                 });
             }else{
                 response.status(200).json({
                     kazi: 'hamna',
-                    skip: page * size,
-                    size: size,
-                    page: page + 1
+                    mbele: {
+                        skip: (page + 1) * size,
+                        size: size,
+                        page: page + 1
+                    },
+                    nyuma: {
+                        skip: page * size,
+                        size: size,
+                        page: page
+                    }
                 });
             }
         }).catch(reason=>{
