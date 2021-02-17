@@ -7,21 +7,13 @@ export const getUser = bfast.functions().onGetHttpRequest(
     (request, response) => {
         const mobile = request.params.mobile;
         bfast.database().table('users').get(mobile).then(value => {
-            if (value && !Array.isArray(value)) {
+            if (value && !Array.isArray(value) && value.name && value.age) {
                 response.status(200).json(value);
             } else {
-                response.status(404).json({ message: 'no such user' });
+                response.status(404).json({ message: 'registration not completed' });
             }
         }).catch(reason => {
-            // if(reason && reason.message && reason.message.toString().trim() === 'Query not succeed'){
-            //     return bfast.database().table('users').save(body).then(value=>{
-            //         response.status(200).json(value);
-            //     }).catch(reason=>{
-            //         response.status(400).json(reason);
-            //     });
-            // }else{
             response.status(400).json(reason);
-            // }
         });
     }
 );
