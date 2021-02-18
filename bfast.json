@@ -1,1 +1,9 @@
-{"projectId":"kazisquare","ignore":["**/node_modules/**","**/specs/**","**/*.specs.js","assets/**"]}
+{
+    "projectId": "kazisquare",
+    "ignore": [
+        "**/node_modules/**",
+        "**/specs/**",
+        "**/*.specs.js",
+        "assets/**"
+    ]
+}
