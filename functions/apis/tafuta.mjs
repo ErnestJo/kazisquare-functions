@@ -1,10 +1,14 @@
 import bfastnode from "bfastnode";
 const {bfast} = bfastnode;
 
-export const searchWikipedia = bfast.functions().onGetHttpRequest(
+export const searchWikipedia = bfast.functions().onHttpRequest(
     '/learn',
     (request, respose)=>{
-        const query = request.query.q;
+        let query = request.query.q;
+        const body = request.body;
+        if(body && body.q){
+             query = body.q;
+        }
         const searchUrl = `https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${encodeURIComponent(query)}`
         bfast.functions().request(searchUrl).get().then(value=>{
            if(value && value.query && value.query.pages && typeof value.query.pages === 'object'){
