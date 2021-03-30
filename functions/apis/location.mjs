@@ -524,14 +524,12 @@ export const searchRegion = bfast.functions().onGetHttpRequest(
     '/regions',
     (request, respose)=> {
         const q = request.query.q;
-            respose.status(200).json(
-                {
-                    jibu: location.filter(x=>{
-                        const xString = JSON.stringify(x).toLowerCase();
-                        return xString.includes(q.toLowerCase());
-                    }).map(y=>`${location.indexOf(y)+1}. `+y.city)
-                    .join('\n')
-                }
+            respose.status(200).send(
+                location.filter(x=>{
+                    const xString = JSON.stringify(x).toLowerCase();
+                    return xString.includes(q.toLowerCase());
+                }).map(y=>`${location.indexOf(y)+1}. `+y.city)
+                .join('\n')
             );
     }
 );
