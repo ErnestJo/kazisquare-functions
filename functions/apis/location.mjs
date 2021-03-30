@@ -539,7 +539,7 @@ export const searchRegion = bfast.functions().onGetHttpRequest(
     }
 );
 
-export const searchRegion = bfast.functions().onGetHttpRequest(
+export const getRegionById = bfast.functions().onGetHttpRequest(
     '/regions/:id',
     (request, respose)=> {
     
