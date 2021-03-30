@@ -538,3 +538,13 @@ export const searchRegion = bfast.functions().onGetHttpRequest(
         // })
     }
 );
+
+export const searchRegion = bfast.functions().onGetHttpRequest(
+    '/regions/:id',
+    (request, respose)=> {
+    
+            respose.status(200).json(
+                location[parseInt(request.params.id)-1].city
+            );
+    }
+);
