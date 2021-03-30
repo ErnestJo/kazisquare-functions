@@ -524,27 +524,26 @@ export const searchRegion = bfast.functions().onGetHttpRequest(
     '/regions',
     (request, respose)=> {
         const q = request.query.q;
-        // bfast.functions().request('http://localhost:3000/assets/location.json').get().then(location=>{
             respose.status(200).json(
-                location.filter(x=>{
-                    const xString = JSON.stringify(x).toLowerCase();
-                    return xString.includes(q.toLowerCase());
-                }).map(y=>`${location.indexOf(y)+1}. `+y.city)
-                .join('\n')
+                {
+                    jibu: location.filter(x=>{
+                        const xString = JSON.stringify(x).toLowerCase();
+                        return xString.includes(q.toLowerCase());
+                    }).map(y=>`${location.indexOf(y)+1}. `+y.city)
+                    .join('\n')
+                }
             );
-        // }).catch(r=>{
-        //     console.location(r);
-        //     respose.status(400).json({message: 'fail to get locations'});
-        // })
     }
 );
 
 export const getRegionById = bfast.functions().onGetHttpRequest(
     '/regions/:id',
     (request, respose)=> {
-    
-            respose.status(200).json(
-                location[parseInt(request.params.id)-1].city
-            );
+        try{
+            const city = location[parseInt(request.params.id)-1].city;
+            respose.status(200).json({jibu: city});
+        }catch(e){
+            Response.status(400).json({message: 'fail to get a region'});
+        }
     }
 );
