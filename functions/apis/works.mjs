@@ -99,7 +99,7 @@ export const saveWorkV2 = bfast.functions().onPostHttpRequest(
         const work = body.work;
         const user = body.user;
         if (work && user && user.name) {
-            if(work.name && work.price && work.region && work.slots && work.days && work.phone && work.location){
+            if(work.name && work.price && work.region && work.slots && work.days && work.phone && work.location && work.category){
                 work.owner = user;
                 bfast.database().table('works').save(work).then(value=>{
                     response.status(200).json(value);
@@ -114,3 +114,11 @@ export const saveWorkV2 = bfast.functions().onPostHttpRequest(
         }
     }
 );
+
+export const getWorksToDoV2 = bfast.functions().onGetHttpRequest(
+    '/works',
+    (request, response)=>{
+        const region = request.query.region?request.query.region: '';
+
+    }
+)
