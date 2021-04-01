@@ -29,6 +29,18 @@ export const addWork = bfast.functions().onPostHttpRequest(
 export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
     '/works/:category',
     (request, response) => {
+        let skip = request.query.skip ? request.query.skip : 0;
+        let size = request.query.size ? request.query.size : 8;
+        let page = request.query.page ? request.query.page : 0;
+        // if(Number.isNaN(page)){
+        page = parseInt(page);
+        // }
+        // if(Number.isNaN(skip)){
+        skip = parseInt(skip);
+        // }
+        // if(Number.isNaN(size)){
+        size = parseInt(size);
+        // }
         bfast.database().table('works').query()
             .equalTo("category", request.params.category)
             .orderBy("_created_at", -1)
@@ -38,7 +50,7 @@ export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
                 if (value && Array.isArray(value) && value.length > 0) {
                     response.status(200).json({
                         kazi: value.map(x => {
-                            return `${value.indexOf(x) + 1}) ${x.title} Tsh ${numeral(x.wage).format('0,0')} Piga ${x.mobile}.`;
+                            return `${value.indexOf(x) + 1}) ${x.name} Tsh ${numeral(x.price).format('0,0')} Piga ${x.phone}.`;
                         }).join('\n'),
                         mbele: {
                             skip: (page + 1) * size,
