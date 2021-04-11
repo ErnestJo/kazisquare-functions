@@ -2,10 +2,11 @@
   "name": "kazisquare-functions",
   "version": "0.0.1",
   "scripts": {
-    "test": "echo \"no test\""
+    "test": "echo \"no test\"",
+    "start": "bfast fs serve"
   },
   "dependencies": {
-    "bfastnode": "^4.0.11",
+    "bfastnode": "^4.2.2",
     "numeral": "^2.0.6"
   },
   "private": true
