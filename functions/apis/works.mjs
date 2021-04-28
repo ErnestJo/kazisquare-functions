@@ -29,18 +29,6 @@ const userWorkChoices = {};
 //     }
 // );
 
-export const devRasmiApi = bfast.functions().onGetHttpRequest(
-    '/dev/works/:category/:uuid',
-    (request, response) => {
-        worksController.kaziRasmi().then(kazir => {
-            response.json(kazir);
-        }).catch(reason => {
-            console.log(reason);
-            response.status(400).send(reason);
-        });
-    }
-);
-
 export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
     '/works/:category/:uuid',
     (request, response) => {
@@ -124,8 +112,8 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                 .query()
                 .byId(userWorkChoices[uuid][workId])
                 .updateBuilder()
-                .set('removed', true)
-                .set('selected', true)
+                .set('removed', false)
+                .set('selected', false)
                 .set('selected_by', user)
                 .update()
                 // .get(userWorkChoices[uuid][workId])
