@@ -1,9 +1,9 @@
 import bfastnode from "bfastnode";
 import numeral from 'numeral';
-import { WorksController } from "../constrollers/works.controller.mjs";
+import {WorksController} from "../constrollers/works.controller.mjs";
 
 const worksController = new WorksController();
-const { bfast } = bfastnode;
+const {bfast} = bfastnode;
 const userWorkChoices = {};
 
 // export const addWork = bfast.functions().onPostHttpRequest(
@@ -56,43 +56,43 @@ export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
             .size(size)
             .skip(skip)
             .find().then(value => {
-                if (value && Array.isArray(value) && value.length > 0) {
-                    userWorkChoices[uuid] = { createdAt: new Date() };
-                    response.status(200).json({
-                        kazi: value.map(x => {
-                            userWorkChoices[uuid][value.indexOf(x) + 1] = x.id;
-                            return `${value.indexOf(x) + 1}) ${x.name} Tsh ${numeral(x.price).format('0,0')} Piga ${x.phone}.`;
-                        }).join('\n'),
-                        mbele: {
-                            skip: (page + 1) * size,
-                            size: size,
-                            page: page + 1
-                        },
-                        nyuma: {
-                            skip: page * size,
-                            size: size,
-                            page: page
-                        }
-                    });
-                } else {
-                    response.status(200).json({
-                        kazi: 'hamna',
-                        mbele: {
-                            skip: 0,
-                            size: 8,
-                            page: 0
-                        },
-                        nyuma: {
-                            skip: 0,
-                            size: 8,
-                            page: 0
-                        }
-                    });
-                }
-            }).catch(reason => {
-                console.log(reason);
-                response.status(400).json(reason);
-            });
+            if (value && Array.isArray(value) && value.length > 0) {
+                userWorkChoices[uuid] = {createdAt: new Date()};
+                response.status(200).json({
+                    kazi: value.map(x => {
+                        userWorkChoices[uuid][value.indexOf(x) + 1] = x.id;
+                        return `${value.indexOf(x) + 1}) ${x.name} Tsh ${numeral(x.price).format('0,0')} Piga ${x.phone}.`;
+                    }).join('\n'),
+                    mbele: {
+                        skip: (page + 1) * size,
+                        size: size,
+                        page: page + 1
+                    },
+                    nyuma: {
+                        skip: page * size,
+                        size: size,
+                        page: page
+                    }
+                });
+            } else {
+                response.status(200).json({
+                    kazi: 'hamna',
+                    mbele: {
+                        skip: 0,
+                        size: 8,
+                        page: 0
+                    },
+                    nyuma: {
+                        skip: 0,
+                        size: 8,
+                        page: 0
+                    }
+                });
+            }
+        }).catch(reason => {
+            console.log(reason);
+            response.status(400).json(reason);
+        });
     }
     // }
 );
@@ -115,15 +115,33 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                 .set('removed', false)
                 .set('selected', false)
                 .set('selected_by', user)
-                .update()
+                .update({returnFields: []})
                 // .get(userWorkChoices[uuid][workId])
                 .then(value => {
                     response.status(200).json(value);
+                    bfast.functions().request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json').post({
+                        "urns": value.owner.urns,
+                        "text": [
+                            `Kazi yako ${value.name} imechaguliwa na ${user.name} mwenye maelezo yafuatayo. `,
+                            Object.keys(user.field).map(key => {
+                                return `${key}: ${user.field[key]}`
+                            }).join(', ')
+                        ].join('')
+                    }, {
+                        headers: {
+                            Authorization: 'Token 991397e43c4fc46db6f902600132103c149cbeeb',
+                            'content-type': 'application/json'
+                        }
+                    }).then(value => {
+                        console.log(value, ': sms imetumwa kwa mwenye kazi.')
+                    }).catch(_234 => {
+                        console.log(_234, ': imeshindwa tuma sms kwa mwenye kazi.');
+                    });
                 }).catch(reason => {
-                    response.status(400).send(reason);
-                })
+                response.status(400).send(reason);
+            });
         } else {
-            response.status(400).send({ message: "no choices for you" });
+            response.status(400).send({message: "no choices for you"});
         }
     }
 );
@@ -145,10 +163,10 @@ export const saveWorkV2 = bfast.functions().onPostHttpRequest(
                     response.status(400).send(reason);
                 });
             } else {
-                response.status(400).json({ jibu: "work object is invalid" });
+                response.status(400).json({jibu: "work object is invalid"});
             }
         } else {
-            response.status(400).json({ jibu: "please enter a valid data type" });
+            response.status(400).json({jibu: "please enter a valid data type"});
         }
     }
 );
