@@ -123,7 +123,9 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                         const uuid = value12.owner.uuid;
                         const workName = value12.name;
                         contacts.push(uuid);
-                        bfast.functions().request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
+                        console.log(user.name, '*******************')
+                        bfast.functions()
+                            .request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
                             .post({
                                 "contacts": contacts,
                                 "text": [
@@ -137,15 +139,17 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                                     Authorization: 'Token 991397e43c4fc46db6f902600132103c149cbeeb',
                                     'content-type': 'application/json'
                                 }
-                            }).then(value => {
-                            console.log(value, ': sms imetumwa kwa mwenye kazi.')
-                        }).catch(_234 => {
-                            console.log(_234, ': imeshindwa tuma sms kwa mwenye kazi.');
-                        });
+                            })
+                            .then(value234 => {
+                                console.log(value234, ': sms imetumwa kwa mwenye kazi.')
+                            })
+                            .catch(_234 => {
+                                console.log(_234, ': imeshindwa tuma sms kwa mwenye kazi.');
+                            });
                     } catch (e) {
                         console.log(e, "***************");
                     }
-                    response.status(200).json(value);
+                    response.status(200).json(value12);
                 })
                 .catch(reason => {
                     response.status(400).send(reason);
