@@ -119,13 +119,12 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                 // .get(userWorkChoices[uuid][workId])
                 .then(value => {
                     console.log(value);
-                    response.status(200).json(value);
                     try {
                         bfast.functions().request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
                             .post({
-                                "urns": value.owner.urns,
+                                "contacts": [value.owner.uuid],
                                 "text": [
-                                    `Kazi yako ${value.name} imechaguliwa na ${user.name} mwenye maelezo yafuatayo. `,
+                                    `Kazi yako ${value?.name} imechaguliwa na ${user?.name} mwenye maelezo yafuatayo. `,
                                     Object.keys(user.field).map(key => {
                                         return `${key}: ${user.field[key]}`
                                     }).join(', ')
@@ -143,6 +142,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                     } catch (e) {
                         console.log(e, "***************");
                     }
+                    response.status(200).json(value);
                 })
                 .catch(reason => {
                     response.status(400).send(reason);
