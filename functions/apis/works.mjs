@@ -118,6 +118,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                 .update({returnFields: []})
                 // .get(userWorkChoices[uuid][workId])
                 .then(value => {
+                    console.log(value);
                     response.status(200).json(value);
                     try {
                         bfast.functions().request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
