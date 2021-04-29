@@ -118,7 +118,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                 .update({returnFields: []})
                 // .get(userWorkChoices[uuid][workId])
                 .then(value => {
-                    console.log(value);
+                    console.log(value.name);
                     try {
                         const contacts = [];
                         const uuid = value.owner.uuid;
