@@ -123,7 +123,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                         const uuid = value12.owner.uuid;
                         const workName = value12.name;
                         contacts.push(uuid);
-                        console.log(user.name, '*******************')
+                        console.log(user, '*******************')
                         bfast.functions()
                             .request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
                             .post({
