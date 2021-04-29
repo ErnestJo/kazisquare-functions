@@ -117,17 +117,16 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                 .set('selected_by', user)
                 .update({returnFields: []})
                 // .get(userWorkChoices[uuid][workId])
-                .then(value => {
-                    console.log(value.name);
+                .then(value12 => {
                     try {
                         const contacts = [];
-                        const uuid = value.owner.uuid;
+                        const uuid = value12.owner.uuid;
                         contacts.push(uuid);
                         bfast.functions().request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
                             .post({
                                 "contacts": contacts,
                                 "text": [
-                                    `Kazi yako ${value.name} imechaguliwa na ${user.name} mwenye maelezo yafuatayo. `,
+                                    `Kazi yako ${value12.name} imechaguliwa na ${user.name} mwenye maelezo yafuatayo. `,
                                     Object.keys(user.field).map(key => {
                                         return `${key}: ${user.field[key]}`
                                     }).join(', ')
