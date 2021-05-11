@@ -29,7 +29,7 @@ export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
                 response.status(200).json({
                     kazi: value.map(x => {
                         userWorkChoices[uuid][value.indexOf(x) + 1] = x.id;
-                        return `${value.indexOf(x) + 1}) ${x.name} Tsh ${numeral(x.price).format('0,0')} Piga ${x.phone}.`;
+                        return `${value.indexOf(x) + 1}) ${x.name} Tsh ${numeral(x.price).format('0,0')} Maelezo ${x.location}.`;
                     }).join('\n'),
                     mbele: {
                         skip: (page + 1) * size,
@@ -89,7 +89,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                         const uuid = value12.owner.uuid;
                         const workName = value12.name;
                         contacts.push(uuid);
-                        console.log(user, '******************* USER');
+                        // console.log(user, '******************* USER');
                         bfast.functions()
                             .request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
                             .post({
