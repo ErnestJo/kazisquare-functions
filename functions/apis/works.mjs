@@ -99,7 +99,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                                 ].join('')
                             }, {
                                 headers: {
-                                    Authorization: 'Token 991397e43c4fc46db6f902600132103c149cbeeb',
+                                    Authorization: 'Token a47c6a3aa306cd979ee4bf07d65766eaabad2199',
                                     'content-type': 'application/json'
                                 }
                             })
