@@ -6,29 +6,6 @@ const worksController = new WorksController();
 const {bfast} = bfastnode;
 const userWorkChoices = {};
 
-// export const addWork = bfast.functions().onPostHttpRequest(
-//     '/works/:type',
-//     (request, response) => {
-//         let workType = request.params.type;
-//         const work = request.body;
-//         if (workType.toString().trim() === '1') {
-//             workType = 'online';
-//         } else {
-//             workType = 'physical';
-//         }
-//         work.type = workType;
-//         if (work && work.wage && work.mobile && work.title) {
-//             bfast.database().table('works').save(work).then(value => {
-//                 response.status(200).json(value);
-//             }).catch(reason => {
-//                 response.status(400).json(reason);
-//             });
-//         } else {
-//             response.status(400).json({ message: "bad data format" });
-//         }
-//     }
-// );
-
 export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
     '/works/:category/:uuid',
     (request, response) => {
@@ -36,15 +13,6 @@ export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
         let skip = request.query.skip ? request.query.skip : 0;
         let size = request.query.size ? request.query.size : 8;
         let page = request.query.page ? request.query.page : 0;
-        const category = request.params.category;
-        // if(category === 'rasmi'){
-        //     worksController.kaziRasmi().then(kazir=>{
-        //         response.json(kazir);
-        //     }).catch(reason=>{
-        //         console.log(reason);
-        //         response.status(400).send(reason);
-        //     });
-        // }else{
         page = parseInt(page);
         skip = parseInt(skip);
         size = parseInt(size);
@@ -94,7 +62,6 @@ export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
             response.status(400).json(reason);
         });
     }
-    // }
 );
 
 export const selectWorkToDo = bfast.functions().onPostHttpRequest(
@@ -116,14 +83,13 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                 .set('selected', false)
                 .set('selected_by', user)
                 .update({returnFields: []})
-                // .get(userWorkChoices[uuid][workId])
                 .then(value12 => {
                     try {
                         const contacts = [];
                         const uuid = value12.owner.uuid;
                         const workName = value12.name;
                         contacts.push(uuid);
-                        console.log(user, '*******************')
+                        console.log(user, '******************* USER');
                         bfast.functions()
                             .request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
                             .post({
@@ -147,7 +113,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                                 console.log(_234, ': imeshindwa tuma sms kwa mwenye kazi.');
                             });
                     } catch (e) {
-                        console.log(e, "***************");
+                        console.log(e, "*************** SEND SMS");
                     }
                     response.status(200).json(value12);
                 })
