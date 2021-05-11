@@ -97,7 +97,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                                 "text": [
                                     `Kazi yako ${workName} imechaguliwa na ${user.name} mwenye maelezo yafuatayo. `,
                                     Object.keys(user.fields).map(key => {
-                                        return `${key}: ${user.field[key]}`
+                                        return `${key}: ${user.fields[key]}`
                                     }).join(', ')
                                 ].join('')
                             }, {
