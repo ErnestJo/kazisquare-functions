@@ -95,10 +95,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                             .post({
                                 "contacts": contacts,
                                 "text": [
-                                    `Kazi yako ${workName} imechaguliwa na ${user.name} mwenye maelezo yafuatayo. `,
-                                    Object.keys(user.fields).map(key => {
-                                        return `${key}: ${user.fields[key]}`
-                                    }).join(', ')
+                                    `Kazi yako ${workName} imechaguliwa na ${user.name} mwenye namba . `,
                                 ].join('')
                             }, {
                                 headers: {
