@@ -9,7 +9,7 @@ const myWorkChoices = {};
 
 export const getUserWorks = bfast.functions().onGetHttpRequest(
     '/user/:uuid/works',
-    (request, response)=>{
+    (request, response) => {
         const uuid = request.params.uuid;
         let skip = request.query.skip ? request.query.skip : 0;
         let size = request.query.size ? request.query.size : 8;
@@ -63,6 +63,35 @@ export const getUserWorks = bfast.functions().onGetHttpRequest(
             console.log(reason);
             response.status(400).json(reason);
         });
+    }
+);
+
+export const removeUserWork = bfast.functions().onPostHttpRequest(
+    '/user/:uuid/works/:workId/remove',
+    (request, response) => {
+        const uuid = request.params.uuid;
+        const workId = request.params.workid;
+        const user = request.body.user;
+        if (myWorkChoices[uuid]
+            && typeof myWorkChoices[uuid] === "object"
+            && myWorkChoices[uuid][workId]
+            && typeof myWorkChoices[uuid][workId] === "string"
+        ) {
+            bfast.database().table('works')
+                .query()
+                .byId(myWorkChoices[uuid][workId])
+                .updateBuilder()
+                .set('removed', true)
+                .update({returnFields: []})
+                .then(value12 => {
+                    response.status(200).json(value12);
+                })
+                .catch(reason => {
+                    response.status(400).send(reason);
+                });
+        } else {
+            response.status(400).send({message: "no work to remove, try again"});
+        }
     }
 );
 
