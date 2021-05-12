@@ -5,6 +5,66 @@ import {WorksController} from "../constrollers/works.controller.mjs";
 const worksController = new WorksController();
 const {bfast} = bfastnode;
 const userWorkChoices = {};
+const myWorkChoices = {};
+
+export const getUserWorks = bfast.functions().onGetHttpRequest(
+    '/user/:uuid/works',
+    (request, response)=>{
+        const uuid = request.params.uuid;
+        let skip = request.query.skip ? request.query.skip : 0;
+        let size = request.query.size ? request.query.size : 8;
+        let page = request.query.page ? request.query.page : 0;
+        page = parseInt(page);
+        skip = parseInt(skip);
+        size = parseInt(size);
+        bfast.database().table('works')
+            .query()
+            .orderBy("_created_at", -1)
+            .equalTo('removed', false)
+            .equalTo('owner.uuid', uuid)
+            .size(size)
+            .skip(skip)
+            .find().then(value => {
+            if (value && Array.isArray(value) && value.length > 0) {
+                myWorkChoices[uuid] = {createdAt: new Date()};
+                response.status(200).json({
+                    kazi: value.map(x => {
+                        myWorkChoices[uuid][value.indexOf(x) + 1] = x.id;
+                        return `${value.indexOf(x) + 1}) ${x.name}, Maelezo  ${x.location}.`;
+                    }).join('\n'),
+                    mbele: {
+                        skip: (page + 1) * size,
+                        size: size,
+                        page: page + 1
+                    },
+                    nyuma: {
+                        skip: page * size,
+                        size: size,
+                        page: page
+                    }
+                });
+            } else {
+                const uuid = request.params.uuid;
+                response.status(200).json({
+                    kazi: 'hamna',
+                    mbele: {
+                        skip: 0,
+                        size: 8,
+                        page: 0
+                    },
+                    nyuma: {
+                        skip: 0,
+                        size: 8,
+                        page: 0
+                    }
+                });
+            }
+        }).catch(reason => {
+            console.log(reason);
+            response.status(400).json(reason);
+        });
+    }
+);
 
 export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
     '/works/:category/:uuid',
@@ -29,7 +89,7 @@ export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
                 response.status(200).json({
                     kazi: value.map(x => {
                         userWorkChoices[uuid][value.indexOf(x) + 1] = x.id;
-                        return `${value.indexOf(x) + 1}) ${x.name} Tsh ${numeral(x.price).format('0,0')} Maelezo ${x.location}.`;
+                        return `${value.indexOf(x) + 1}) ${x.name} Tsh ${numeral(x.price).format('0,0')} Maelezo  ${x.location}.`;
                     }).join('\n'),
                     mbele: {
                         skip: (page + 1) * size,
