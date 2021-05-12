@@ -91,6 +91,8 @@ export const removeUserWork = bfast.functions().onPostHttpRequest(
                     response.status(400).send(reason);
                 });
         } else {
+            console.log('no work shown');
+            console.log(myWorkChoices)
             response.status(400).send({message: "no work to remove, try again"});
         }
     }
