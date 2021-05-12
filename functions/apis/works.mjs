@@ -87,6 +87,7 @@ export const removeUserWork = bfast.functions().onPostHttpRequest(
                     response.status(200).json(value12);
                 })
                 .catch(reason => {
+                    console.log(reason);
                     response.status(400).send(reason);
                 });
         } else {
