@@ -1,6 +1,7 @@
 import bfastnode from "bfastnode";
 import numeral from 'numeral';
 import {WorksController} from "../constrollers/works.controller.mjs";
+import moment from "moment";
 
 const worksController = new WorksController();
 const {bfast} = bfastnode;
@@ -90,8 +91,8 @@ export const removeUserWork = bfast.functions().onPostHttpRequest(
                     response.status(400).send(reason);
                 });
         } else {
-            console.log('no work shown');
-            console.log(myWorkChoices)
+            // console.log('no work shown');
+            // console.log(myWorkChoices)
             response.status(400).send({message: "no work to remove, try again"});
         }
     }
@@ -224,6 +225,7 @@ export const saveWorkV2 = bfast.functions().onPostHttpRequest(
             if (work.name && work.price && work.region && work.slots && work.days && work.phone && work.location && work.category) {
                 work.owner = user;
                 work.removed = false;
+                work.removeAt = moment().add(work.days, 'days').toISOString();
                 work.selected = false;
                 bfast.database().table('works').save(work).then(value => {
                     response.status(200).json(value);

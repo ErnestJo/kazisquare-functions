@@ -37,7 +37,7 @@ export const registerUser = bfast.functions().onPostHttpRequest(
             console.log(reason);
             if(reason && reason.message && reason.message.toString().trim() === 'Query not succeed'){
                 body.id = uuid;
-                console.log()
+                // console.log()
                 return bfast.database().table('users').save(body).then(value=>{
                     response.status(200).json(value);
                 }).catch(reason=>{
