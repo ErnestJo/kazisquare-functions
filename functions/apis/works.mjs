@@ -187,7 +187,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                             .post({
                                 "contacts": contacts,
                                 "text": [
-                                    `Kazi yako ${workName} imechaguliwa na ${user.name} mwenye namba ${User.fields.mobile}.`,
+                                    `Kazi yako ${workName} imechaguliwa na ${user.name} mwenye namba ${User.fields.simu}.`,
                                 ].join('')
                             }, {
                                 headers: {
