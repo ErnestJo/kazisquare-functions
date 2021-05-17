@@ -7,7 +7,7 @@ export const getUserv2 = bfast.functions().onGetHttpRequest(
     (request, response) => {
         const uuid = request.params.uuid;
         bfast.database().table('_User').get(uuid, {useMasterKey: true}).then(value => {
-            if (value && !Array.isArray(value) && value.name) {
+            if (value && !Array.isArray(value) && value.name && value.fields && value.fields.mobile) {
                 delete value.username;
                 delete value.role;
                 delete value.password;

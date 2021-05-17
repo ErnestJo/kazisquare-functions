@@ -173,21 +173,21 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                 .updateBuilder()
                 .set('removed', false)
                 .set('selected', false)
-                .set('selected_by', user)
+                // .set('selected_by', user)
                 .update({returnFields: []})
-                .then(value12 => {
+                .then(async value12 => {
                     try {
+                        const User = await bfast.database().table('_User').get(user.uuid, {useMasterKey: true});
                         const contacts = [];
                         const uuid = value12.owner.uuid;
                         const workName = value12.name;
                         contacts.push(uuid);
-                        // console.log(user, '******************* USER');
                         bfast.functions()
                             .request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
                             .post({
                                 "contacts": contacts,
                                 "text": [
-                                    `Kazi yako ${workName} imechaguliwa na ${user.name} mwenye namba . `,
+                                    `Kazi yako ${workName} imechaguliwa na ${user.name} mwenye namba ${User.fields.mobile}.`,
                                 ].join('')
                             }, {
                                 headers: {
