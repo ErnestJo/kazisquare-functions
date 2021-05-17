@@ -68,10 +68,10 @@ export const getUserWorks = bfast.functions().onGetHttpRequest(
 );
 
 export const removeUserWork = bfast.functions().onPostHttpRequest(
-    '/user/:uuid/works/:work_id/remove',
+    '/user/:uuid/works/:workid/remove',
     (request, response) => {
         const uuid = request.params.uuid;
-        const workId = request.params.work_id;
+        const workId = request.params.workid;
         if (myWorkChoices[uuid]
             && typeof myWorkChoices[uuid] === "object"
             && myWorkChoices[uuid][workId]
