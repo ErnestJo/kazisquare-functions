@@ -1,5 +1,4 @@
-import bfastnode from "bfastnode";
-const {bfast} = bfastnode;
+import bfast from "bfast";
 const location = [
     {
         "city": "Dar es Salaam", 
@@ -522,13 +521,13 @@ const location = [
 
 export const searchRegion = bfast.functions().onGetHttpRequest(
     '/regions',
-    (request, respose)=> {
+    (request, response)=> {
         const q = request.query.q;
-            respose.status(200).json(
+            response.status(200).json(
                 {
                     jibu: location.filter(x=>{
-                        const xString = JSON.stringify(x).toLowerCase();
-                        return xString.includes(q.toLowerCase());
+                        const xString = JSON.stringify(x)?.toLowerCase();
+                        return xString?.includes(q?.toLowerCase());
                     }).map(y=>`${location.indexOf(y)+1}. `+y.city)
                     .join('\n')
                 }
@@ -538,10 +537,10 @@ export const searchRegion = bfast.functions().onGetHttpRequest(
 
 export const getRegionById = bfast.functions().onGetHttpRequest(
     '/regions/:id',
-    (request, respose)=> {
+    (request, response)=> {
         try{
             const city = location[parseInt(request.params.id)-1].city;
-            respose.status(200).json({jibu: city});
+            response.status(200).json({jibu: city});
         }catch(e){
             Response.status(400).json({message: 'fail to get a region'});
         }

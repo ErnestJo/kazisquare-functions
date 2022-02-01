@@ -1,10 +1,9 @@
-import bfastnode from "bfastnode";
+import bfast from "bfast";
 import numeral from 'numeral';
-import {WorksController} from "../constrollers/works.controller.mjs";
+// import {WorksController} from "../constrollers/works.controller.mjs";
 import moment from "moment";
 
-const worksController = new WorksController();
-const {bfast} = bfastnode;
+// const worksController = new WorksController();
 const userWorkChoices = {};
 const myWorkChoices = {};
 
@@ -20,7 +19,7 @@ export const getUserWorks = bfast.functions().onGetHttpRequest(
         size = parseInt(size);
         bfast.database().table('works')
             .query()
-            .orderBy("_created_at", -1)
+            .orderBy("_created_at", "desc")
             .equalTo('removed', false)
             .equalTo('owner.uuid', uuid)
             .size(size)
@@ -110,7 +109,7 @@ export const getWorksByCategoryV2 = bfast.functions().onGetHttpRequest(
         size = parseInt(size);
         bfast.database().table('works').query()
             .equalTo("category", request.params.category)
-            .orderBy("_created_at", -1)
+            .orderBy("_created_at", "desc")
             .equalTo('removed', false)
             .equalTo('selected', false)
             .size(size)

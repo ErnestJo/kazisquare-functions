@@ -1,6 +1,5 @@
-import bfastnode from 'bfastnode';
+import bfast from 'bfast';
 
-const {bfast} = bfastnode;
 
 export class WorksController{
     async kaziRasmi(){

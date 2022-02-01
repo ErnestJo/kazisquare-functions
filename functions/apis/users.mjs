@@ -1,6 +1,4 @@
-import bfastnode from "bfastnode";
-
-const {bfast} = bfastnode;
+import bfast from "bfast";
 
 export const getUserv2 = bfast.functions().onGetHttpRequest(
     '/users/:uuid',

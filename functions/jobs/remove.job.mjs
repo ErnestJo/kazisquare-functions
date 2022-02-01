@@ -1,7 +1,5 @@
-import bfastnode from "bfastnode";
+import bfast from "bfast";
 import moment from "moment";
-
-const {bfast} = bfastnode;
 
 let isRunning = false;
 

@@ -1,6 +1,4 @@
-import bfastnode from 'bfastnode';
-
-const {bfast} = bfastnode;
+import bfast from 'bfast';
 
 bfast.init({
     applicationId: 'kazisquare',
