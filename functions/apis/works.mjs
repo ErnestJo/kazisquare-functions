@@ -181,6 +181,12 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                         const uuid = value12.owner.uuid;
                         const workName = value12.name;
                         contacts.push(uuid);
+                        console.log({
+                            "contacts": contacts,
+                            "text": [
+                                `Kazi yako ${workName} imechaguliwa na ${user.name} mwenye namba ${User.fields.simu}.`,
+                            ].join('')
+                        })
                         bfast.functions()
                             .request('https://rapidpro.ilhasoft.mobi/api/v2/broadcasts.json')
                             .post({
