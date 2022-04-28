@@ -175,6 +175,7 @@ export const selectWorkToDo = bfast.functions().onPostHttpRequest(
                 // .set('selected_by', user)
                 .update({returnFields: []})
                 .then(async value12 => {
+                    console.log(value12)
                     try {
                         const User = await bfast.database().table('_User').get(user.uuid, {useMasterKey: true});
                         const contacts = [];
@@ -226,6 +227,7 @@ export const saveWorkV2 = bfast.functions().onPostHttpRequest(
         const body = request.body;
         const work = body.work;
         const user = body.user;
+        console.log(user)
         if (work && user && user.name) {
             if (work.name && work.price && work.region && work.slots && work.days && work.phone && work.location && work.category) {
                 work.owner = user;
